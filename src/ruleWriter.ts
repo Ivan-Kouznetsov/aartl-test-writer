@@ -26,9 +26,9 @@ export const alwaysTheSame = (values: any[]): { alwaysTheSame: boolean; value: a
 
   const first = values[0];
 
-  values.forEach((v) => {
+  for (const v of values) {
     if (v !== first) return { alwaysTheSame: false, value: undefined };
-  });
+  }
 
   return { alwaysTheSame: true, value: first };
 };
