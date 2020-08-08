@@ -75,10 +75,13 @@ export const createRules = (obj: object, path: ITypedPath): { [key: string]: str
 };
 
 export const ruleWriter = (obj: any, paths: Set<ITypedPath>): { [key: string]: string }[] => {
-  let result: { [key: string]: string }[] = [];
+  const result: { [key: string]: string }[] = [];
 
   paths.forEach((path) => {
-    result = result.concat(createRules(obj, path));
+    const rules = createRules(obj, path);
+    rules.forEach((rule) => {
+      if (result.find((r) => JSON.stringify(r) === JSON.stringify(rule)) === undefined) result.push(rule);
+    });
   });
 
   return result;

@@ -6,7 +6,7 @@ describe('rule writer', () => {
   it('should write rules', () => {
     const paths = traverseObject(fixtures.users);
     const rules = ruleWriter(fixtures.users, paths);
-    console.log(rules);
-    expect(rules.length).toBeGreaterThan(10);
+
+    expect(rules.length).toBe(33);
   });
 });
