@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": true,
+    "allowJs": false,
+    "allowUnusedLabels": false,
+    "outDir": "dist",
+    "noEmit": false,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "target": "es6",
+    "watch": false
+  },
+  "exclude": ["node_modules", "src/__tests__", "jest.config.*", "./dist"]
+}
