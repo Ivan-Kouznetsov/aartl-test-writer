@@ -4,6 +4,6 @@ describe('traverseObject', () => {
   it('should should traverse an object', () => {
     const paths = traverseObject(ditto);
 
-    expect(paths.size).toBe(640);
+    expect(paths.size).toBe(630);
   });
 });

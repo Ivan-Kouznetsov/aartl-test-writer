@@ -2,7 +2,6 @@ import { ITypedPath, PathType } from './types/ITypedPath';
 
 export const getPathType = (v: any): PathType => {
   if (typeof v === 'object' && !Array.isArray(v)) return PathType.hashMap;
-  if (Array.isArray(v)) return PathType.array;
   if (typeof v === 'number' || typeof v === 'bigint') return PathType.number;
   if (typeof v === 'string') return PathType.string;
   if (typeof v === 'boolean') return PathType.boolean;
@@ -20,7 +19,7 @@ export const traverseObject = (obj: any): Set<ITypedPath> => {
       const value = obj[key];
       const currentJsonPath = objIsArray ? parentPath : `${parentPath}.${key}`; // avoid adding .0 .1 etc for arrays
 
-      pathList.push({ path: currentJsonPath, type: getPathType(value) });
+      if (!Array.isArray(value)) pathList.push({ path: currentJsonPath, type: getPathType(value) });
       if (typeof value === 'object' && value !== null) {
         getPathsFromObject(value, currentJsonPath);
       }

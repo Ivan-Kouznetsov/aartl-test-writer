@@ -39,40 +39,43 @@ export const startsAt = (values: number[], proposedLowestValue: number) =>
 export const createRules = (obj: object, path: ITypedPath): { [key: string]: string }[] => {
   const objects = jsonpath.query(obj, path.path);
   const same = alwaysTheSame(objects);
+  const rules: { [key: string]: string }[] = [{ [path.path]: 'count > 0' }];
 
   switch (path.type) {
-    case PathType.array:
-      return [{ [path.path]: 'count > 0' }]; // might be redundant
     case PathType.hashMap:
       const commonProps = getCommonTopLevelProperties(objects);
-      const rules: { [key: string]: string }[] = [];
       commonProps.forEach((p) => {
         rules.push({ [path.path]: `each has ${p}` });
       });
-      return rules;
+      break;
     case PathType.boolean:
       if (same.alwaysTheSame) {
-        return [{ [path.path]: same.value.toString() }];
+        rules.push({ [path.path]: same.value.toString() });
       } else {
-        return [{ [path.path]: 'any of true false' }];
+        rules.push({ [path.path]: 'any of true false' });
       }
+      break;
     case PathType.number:
       if (same.alwaysTheSame) {
-        return [{ [path.path]: same.value.toString() }];
+        rules.push({ [path.path]: same.value.toString() });
       } else if (startsAt(<number[]>objects, 1)) {
-        return [{ [path.path]: '>= 1' }];
+        rules.push({ [path.path]: '>= 1' });
       } else if (startsAt(<number[]>objects, 0)) {
-        return [{ [path.path]: '>= 0' }];
+        rules.push({ [path.path]: '>= 0' });
       } else {
-        return [{ [path.path]: 'is number' }];
+        rules.push({ [path.path]: 'is number' });
       }
+      break;
     case PathType.string:
       if (same.alwaysTheSame) {
-        return [{ [path.path]: same.value.toString() }];
+        rules.push({ [path.path]: same.value.toString() });
       } else {
-        return [{ [path.path]: 'is text' }];
+        rules.push({ [path.path]: 'is text' });
       }
+      break;
   }
+
+  return rules;
 };
 
 export const ruleWriter = (obj: any, paths: Set<ITypedPath>): { [key: string]: string }[] => {

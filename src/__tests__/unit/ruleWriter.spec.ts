@@ -17,16 +17,6 @@ describe('Rule writer', () => {
     expect(commonProps).toEqual(['title', 'author', 'year']);
   });
 
-  it('should create array rules', () => {
-    const rules = createRules(
-      { arr: [{ title: 'hello' }, { title: 'hello' }, { title: 'hello' }] },
-      { path: '$..arr', type: PathType.array }
-    );
-
-    expect(rules[0]).toEqual({ '$..arr': 'count > 0' });
-    expect(rules.length).toEqual(1);
-  });
-
   it('should create number rules', () => {
     const zeroTo2 = createRules({ arr: [{ id: 0 }, { id: 1 }, { id: 2 }] }, { path: '$..id', type: PathType.number });
     const oneTo2 = createRules({ arr: [{ id: 1 }, { id: 1 }, { id: 2 }] }, { path: '$..id', type: PathType.number });
@@ -36,17 +26,17 @@ describe('Rule writer', () => {
       { path: '$..id', type: PathType.number }
     );
 
-    expect(zeroTo2[0]).toEqual({ '$..id': '>= 0' });
-    expect(zeroTo2.length).toEqual(1);
+    expect(zeroTo2[1]).toEqual({ '$..id': '>= 0' });
+    expect(zeroTo2.length).toEqual(2);
 
-    expect(oneTo2[0]).toEqual({ '$..id': '>= 1' });
-    expect(oneTo2.length).toEqual(1);
+    expect(oneTo2[1]).toEqual({ '$..id': '>= 1' });
+    expect(oneTo2.length).toEqual(2);
 
-    expect(same[0]).toEqual({ '$..id': '42' });
-    expect(same.length).toEqual(1);
+    expect(same[1]).toEqual({ '$..id': '42' });
+    expect(same.length).toEqual(2);
 
-    expect(different[0]).toEqual({ '$..id': 'is number' });
-    expect(different.length).toEqual(1);
+    expect(different[1]).toEqual({ '$..id': 'is number' });
+    expect(different.length).toEqual(2);
   });
 
   it('should create boolean rules', () => {
@@ -59,8 +49,8 @@ describe('Rule writer', () => {
       { path: '$..is', type: PathType.boolean }
     );
 
-    expect(alwaysSame).toEqual([{ '$..is': 'true' }]);
-    expect(notAlwaysSame).toEqual([{ '$..is': 'any of true false' }]);
+    expect(alwaysSame[1]).toEqual({ '$..is': 'true' });
+    expect(notAlwaysSame[1]).toEqual({ '$..is': 'any of true false' });
   });
 
   it('should create text rules', () => {
@@ -73,7 +63,7 @@ describe('Rule writer', () => {
       { path: '$..is', type: PathType.string }
     );
 
-    expect(alwaysSame).toEqual([{ '$..is': 'pie' }]);
-    expect(notAlwaysSame).toEqual([{ '$..is': 'is text' }]);
+    expect(alwaysSame[1]).toEqual({ '$..is': 'pie' });
+    expect(notAlwaysSame[1]).toEqual({ '$..is': 'is text' });
   });
 });

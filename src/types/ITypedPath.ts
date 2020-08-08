@@ -3,7 +3,6 @@ export enum PathType {
   number,
   boolean,
   hashMap,
-  array,
 }
 
 export interface ITypedPath {
