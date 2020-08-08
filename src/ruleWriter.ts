@@ -33,7 +33,8 @@ export const alwaysTheSame = (values: any[]): { alwaysTheSame: boolean; value: a
   return { alwaysTheSame: true, value: first };
 };
 
-export const isAtLeast = (values: number[], proposedLowestValue: number) => Math.min(...values) >= proposedLowestValue;
+export const startsAt = (values: number[], proposedLowestValue: number) =>
+  values.includes(proposedLowestValue) && Math.min(...values) >= proposedLowestValue;
 
 export const createRules = (obj: object, path: ITypedPath): { [key: string]: string }[] => {
   const objects = jsonpath.query(obj, path.path);
@@ -58,9 +59,9 @@ export const createRules = (obj: object, path: ITypedPath): { [key: string]: str
     case PathType.number:
       if (same.alwaysTheSame) {
         return [{ [path.path]: same.value.toString() }];
-      } else if (isAtLeast(<number[]>objects, 1)) {
+      } else if (startsAt(<number[]>objects, 1)) {
         return [{ [path.path]: '>= 1' }];
-      } else if (isAtLeast(<number[]>objects, 0)) {
+      } else if (startsAt(<number[]>objects, 0)) {
         return [{ [path.path]: '>= 0' }];
       } else {
         return [{ [path.path]: 'is number' }];
